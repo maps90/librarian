@@ -2,10 +2,6 @@ package librarian
 
 var c *Librarian
 
-func init() {
-	c = New()
-}
-
 func New() *Librarian {
 	c := new(Librarian)
 	c.Reset()
