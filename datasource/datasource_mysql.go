@@ -99,7 +99,7 @@ func extractStructs(data Data) (map[string]interface{}, error) {
 }
 
 func (r *MysqlAccess) Insert(data Data) (interface{}, error) {
-	db := r.dbMaster
+	db := r.db
 
 	columnsMap, err := extractStructs(data)
 	if err != nil {
@@ -138,7 +138,7 @@ func (r *MysqlAccess) Insert(data Data) (interface{}, error) {
 }
 
 func (r *MysqlAccess) Update(id interface{}, data Data) (interface{}, error) {
-	db := r.dbMaster
+	db := r.db
 
 	columnsMap, err := extractStructs(data)
 	if err != nil {
@@ -185,7 +185,7 @@ func (r *MysqlAccess) Update(id interface{}, data Data) (interface{}, error) {
 }
 
 func (r *MysqlAccess) Delete(id interface{}, data Data) (interface{}, error) {
-	db := r.dbMaster
+	db := r.db
 
 	var columnId string
 	var value interface{}
@@ -229,7 +229,7 @@ func (r *MysqlAccess) Find(data Data, query map[string]interface{}, order []stri
 	}
 	queryString := fmt.Sprintf("SELECT * FROM %s WHERE %s ORDER BY %s", data.PersistenceName(), buffWhere.String(), strings.Join(order, ","))
 
-	db := r.dbSlave
+	db := r.db
 
 	q, err := db.Queryx(queryString, values...)
 
@@ -247,7 +247,7 @@ func (r *MysqlAccess) Find(data Data, query map[string]interface{}, order []stri
 }
 
 func (r *MysqlAccess) FindById(data Data, id interface{}, result interface{}) error {
-	db := r.dbSlave
+	db := r.db
 
 	var columnId string
 	var idValue interface{}
@@ -255,7 +255,7 @@ func (r *MysqlAccess) FindById(data Data, id interface{}, result interface{}) er
 	idMap, found := id.(map[string]interface{})
 
 	if !found {
-		return nil, errors.New("Id should have type map[string]interface{}")
+		return errors.New("Id should have type map[string]interface{}")
 	}
 
 	for k, v := range idMap {
@@ -268,7 +268,7 @@ func (r *MysqlAccess) FindById(data Data, id interface{}, result interface{}) er
 }
 
 func (r *MysqlAccess) FindPaging(data Data, query map[string]interface{}, order []string, page, limit uint, results interface{}) error {
-	db := r.dbSlave
+	db := r.db
 
 	offset := (page - 1) * limit
 

@@ -10,7 +10,7 @@ const (
 	MONGO = "mongoaccess"
 )
 
-func NewDataAccessFactory(dbapps, database, server string) (*DataAccessor, error) {
+func NewDataAccessFactory(dbapps, database, server string) (interface{}, error) {
 
 	switch dbapps {
 	case MYSQL:
@@ -22,6 +22,6 @@ func NewDataAccessFactory(dbapps, database, server string) (*DataAccessor, error
 		MYSQL, MONGO,
 	}
 
-	return nil, errors.New("Invalid db apps " + dbapps + ", please use (" + strings.Join(dbstrings, "|")+ ")" )
+	return nil, errors.New("Invalid db apps " + dbapps + ", please use (" + strings.Join(dbstrings, "|") + ")")
 
 }
