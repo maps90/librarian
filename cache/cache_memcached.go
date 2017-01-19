@@ -9,11 +9,11 @@ type CMemcached struct {
 	client *memcache.Client
 }
 
-func NewCMemcached(client *memcache.Client) *CMemcached {
+func newCacheMemcached(host string) (*CMemcached, error) {
 	c := new(CMemcached)
-	c.client = client
+	c.client = memcache.New(host)
 
-	return c
+	return c, nil
 }
 
 func (c *CMemcached) Set(key string, data string, expr time.Duration) error {

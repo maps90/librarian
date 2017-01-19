@@ -12,7 +12,7 @@ type MongodbAccess struct {
 	Session  *mgo.Session
 }
 
-func NewMongoRepository(server, database string) (*MongodbAccess, error) {
+func newMongoRepository(server, database string) (*MongodbAccess, error) {
 	repo := &MongodbAccess{Server: server, Database: database}
 	session, err := mgo.Dial(server)
 	if err != nil {

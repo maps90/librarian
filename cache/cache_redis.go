@@ -3,17 +3,25 @@ package cache
 import (
 	"time"
 	"gopkg.in/redis.v5"
+	"strconv"
 )
 
 type CRedis struct {
 	client *redis.Client
 }
 
-func NewCRedis(client *redis.Client) *CRedis {
+func newCacheRedis(host, database string) (*CRedis, error) {
+	db, err := strconv.Atoi(database)
+	if err != nil {
+		return nil, err
+	}
 	c := new(CRedis)
-	c.client = client
+	c.client = redis.NewClient(&redis.Options{
+		Addr:     host,
+		DB:       db,
+	})
 
-	return c
+	return c, nil
 }
 
 func (c *CRedis) Set(key string, data string, expr time.Duration) error {

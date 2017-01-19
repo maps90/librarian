@@ -15,7 +15,7 @@ type MysqlAccess struct {
 	db *sqlx.DB
 }
 
-func NewMysqlRepository(server string) (*MysqlAccess, error) {
+func newMysqlRepository(server string) (*MysqlAccess, error) {
 	db, err := sqlx.Open("mysql", server)
 	//set max idle conn to preserve connection pool
 	db.SetMaxIdleConns(10)

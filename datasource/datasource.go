@@ -10,13 +10,12 @@ const (
 	MONGO = "mongoaccess"
 )
 
-func NewDataAccessFactory(dbapps, database, server string) (interface{}, error) {
-
+func NewDatasourceFactory(dbapps, database, server string) (interface{}, error) {
 	switch dbapps {
 	case MYSQL:
-		return NewMysqlRepository(server)
+		return newMysqlRepository(server)
 	case MONGO:
-		return NewMongoRepository(database, server)
+		return newMongoRepository(database, server)
 	}
 	dbstrings := []string{
 		MYSQL, MONGO,
