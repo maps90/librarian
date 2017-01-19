@@ -1,0 +1,6 @@
+package: github.com/maps90/librarian
+import:
+- package: gopkg.in/redis.v5
+  version: ^5.2.0
+- package: gopkg.in/mgo.v2
+- package: github.com/jmoiron/sqlx

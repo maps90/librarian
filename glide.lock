@@ -1,0 +1,26 @@
+hash: 51f2c248bb683be2c5a95bf0a5d5815acec602ada2faafdcab3abac6712b72c4
+updated: 2017-01-19T10:58:11.983060363+07:00
+imports:
+- name: github.com/bradfitz/gomemcache
+  version: 2fafb84a66c4911e11a8f50955b01e74fe3ab9c5
+  subpackages:
+  - memcache
+- name: github.com/jmoiron/sqlx
+  version: cac998c4f0959c19c638c523e374fa8e4e0bcfe3
+  subpackages:
+  - reflectx
+- name: gopkg.in/mgo.v2
+  version: d90005c5262a3463800497ea5a89aed5fe22c886
+  subpackages:
+  - bson
+  - internal/sasl
+  - internal/scram
+- name: gopkg.in/redis.v5
+  version: 8829ddcd8bdb333e477cc845946c4b9b2ef66280
+  subpackages:
+  - internal
+  - internal/consistenthash
+  - internal/hashtag
+  - internal/pool
+  - internal/proto
+testImports: []
