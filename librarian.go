@@ -2,8 +2,15 @@ package librarian
 
 var c *Librarian
 
+func init() {
+	c = New()
+}
+
 func New() *Librarian {
-	c := new(Librarian)
+	c := &Librarian{
+		unresolved: make(map[string]func() (interface{}, error)),
+		resolved:   make(map[string]interface{}),
+	}
 	c.Reset()
 	return c
 }
@@ -106,6 +113,10 @@ func (c *Librarian) Remove(key string) {
 }
 
 func (c *Librarian) Reset() {
-	c.resolved = make(map[string]interface{})
-	c.unresolved = make(map[string]func() (interface{}, error))
+	if c.resolved == nil {
+		c.resolved = make(map[string]interface{})
+	}
+	if c.unresolved == nil {
+		c.unresolved = make(map[string]func() (interface{}, error))
+	}
 }
