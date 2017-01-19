@@ -4,3 +4,4 @@ import:
   version: ^5.2.0
 - package: gopkg.in/mgo.v2
 - package: github.com/jmoiron/sqlx
+- package: github.com/bradfitz/gomemcache/memcache

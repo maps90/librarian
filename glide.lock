@@ -1,5 +1,5 @@
-hash: 51f2c248bb683be2c5a95bf0a5d5815acec602ada2faafdcab3abac6712b72c4
-updated: 2017-01-19T10:58:11.983060363+07:00
+hash: 050443080cacf424b948b9078ff83cec0a4ec7beac513f8eadb3ca3045d6b4fc
+updated: 2017-01-19T19:14:02.973365517+07:00
 imports:
 - name: github.com/bradfitz/gomemcache
   version: 2fafb84a66c4911e11a8f50955b01e74fe3ab9c5
