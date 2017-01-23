@@ -12,7 +12,7 @@ type MongodbAccess struct {
 	Session  *mgo.Session
 }
 
-func newMongoRepository(server, database string) (*MongodbAccess, error) {
+func newMongoRepository(server, database string) (DataAccessor, error) {
 	repo := &MongodbAccess{Server: server, Database: database}
 	session, err := mgo.Dial(server)
 	if err != nil {
@@ -26,7 +26,7 @@ func (r *MongodbAccess) getCollection(session *mgo.Session, n string) *mgo.Colle
 	return session.DB(r.Database).C(n)
 }
 
-func (r *MongodbAccess) Insert(data Data) (interface{}, error) {
+func (r MongodbAccess) Insert(data Data) (interface{}, error) {
 	session := r.Session.Copy()
 
 	defer session.Close()
@@ -41,7 +41,7 @@ func (r *MongodbAccess) Insert(data Data) (interface{}, error) {
 	return struct{ msg string }{msg}, nil
 }
 
-func (r *MongodbAccess) Update(id interface{}, data Data) (interface{}, error) {
+func (r MongodbAccess) Update(id interface{}, data Data) (interface{}, error) {
 	session := r.Session.Copy()
 
 	defer session.Close()
@@ -54,7 +54,7 @@ func (r *MongodbAccess) Update(id interface{}, data Data) (interface{}, error) {
 	return struct{ msg string }{msg}, nil
 }
 
-func (r *MongodbAccess) Delete(id interface{}, data Data) (interface{}, error) {
+func (r MongodbAccess) Delete(id interface{}, data Data) (interface{}, error) {
 	session := r.Session.Copy()
 
 	defer session.Close()
@@ -68,7 +68,7 @@ func (r *MongodbAccess) Delete(id interface{}, data Data) (interface{}, error) {
 	return struct{ msg string }{msg}, nil
 }
 
-func (r *MongodbAccess) Find(data Data, query map[string]interface{}, order []string, results interface{}) error {
+func (r MongodbAccess) Find(data Data, query map[string]interface{}, order []string, results interface{}) error {
 	session := r.Session.Copy()
 
 	defer session.Close()
@@ -77,7 +77,7 @@ func (r *MongodbAccess) Find(data Data, query map[string]interface{}, order []st
 	return c.Find(query).Sort(order...).All(results)
 }
 
-func (r *MongodbAccess) FindPaging(data Data, query map[string]interface{}, order []string, page, limit int, results interface{}) error {
+func (r MongodbAccess) FindPaging(data Data, query map[string]interface{}, order []string, page, limit int, results interface{}) error {
 	session := r.Session.Copy()
 	defer session.Close()
 
@@ -86,7 +86,7 @@ func (r *MongodbAccess) FindPaging(data Data, query map[string]interface{}, orde
 	return c.Find(query).Sort(order...).Limit(limit).Skip((page - 1) * limit).All(results)
 }
 
-func (r *MongodbAccess) FindById(data Data, objectId interface{}, result interface{}) error {
+func (r MongodbAccess) FindById(data Data, objectId interface{}, result interface{}) error {
 	session := r.Session.Copy()
 
 	defer session.Close()

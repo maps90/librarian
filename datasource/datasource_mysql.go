@@ -9,18 +9,19 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type MysqlAccess struct {
 	db *sqlx.DB
 }
 
-func newMysqlRepository(server string) (*MysqlAccess, error) {
+func newMysqlRepository(server string) (DataAccessor, error) {
 	db, err := sqlx.Open("mysql", server)
 	//set max idle conn to preserve connection pool
-	db.SetMaxIdleConns(10)
+	//db.SetMaxIdleConns(10)
 	//limit connection pool
-	db.SetMaxOpenConns(10)
+	//db.SetMaxOpenConns(10)
 	return &MysqlAccess{db}, err
 }
 
@@ -236,8 +237,12 @@ func (r *MysqlAccess) Find(data Data, query map[string]interface{}, order []stri
 	if err != nil {
 		return err
 	}
-
-	err = sqlx.StructScan(q, results)
+	for q.Next() {
+		err = q.StructScan(results)
+		if err != nil{
+			fmt.Println(err.Error())
+		}
+	}
 
 	if err != nil {
 		return err
@@ -267,7 +272,7 @@ func (r *MysqlAccess) FindById(data Data, id interface{}, result interface{}) er
 	return db.Get(result, queryString, idValue)
 }
 
-func (r *MysqlAccess) FindPaging(data Data, query map[string]interface{}, order []string, page, limit uint, results interface{}) error {
+func (r *MysqlAccess) FindPaging(data Data, query map[string]interface{}, order []string, page, limit int, results interface{}) error {
 	db := r.db
 
 	offset := (page - 1) * limit

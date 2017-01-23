@@ -10,7 +10,7 @@ const (
 	MONGO = "mongoaccess"
 )
 
-func NewDatasourceFactory(dbapps, database, server string) (interface{}, error) {
+func NewDatasourceFactory(dbapps, database, server string) (DataAccessor, error) {
 	switch dbapps {
 	case MYSQL:
 		return newMysqlRepository(server)
