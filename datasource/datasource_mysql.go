@@ -4,12 +4,12 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"reflect"
 	"regexp"
 	"strings"
 	"time"
-	_ "github.com/go-sql-driver/mysql"
 )
 
 type MysqlAccess struct {
@@ -228,18 +228,20 @@ func (r *MysqlAccess) Find(data Data, query map[string]interface{}, order []stri
 		values = append(values, v)
 		index++
 	}
-	queryString := fmt.Sprintf("SELECT * FROM %s WHERE %s ORDER BY %s", data.PersistenceName(), buffWhere.String(), strings.Join(order, ","))
 
+	queryString := fmt.Sprintf("SELECT * FROM %s WHERE %s ", data.PersistenceName(), buffWhere.String())
+	if order != nil {
+		queryString += fmt.Sprintf("ORDER BY %s", strings.Join(order, ","))
+	}
 	db := r.db
 
 	q, err := db.Queryx(queryString, values...)
-
 	if err != nil {
 		return err
 	}
 	for q.Next() {
 		err = q.StructScan(results)
-		if err != nil{
+		if err != nil {
 			fmt.Println(err.Error())
 		}
 	}
@@ -291,7 +293,6 @@ func (r *MysqlAccess) FindPaging(data Data, query map[string]interface{}, order 
 	}
 	queryString := fmt.Sprintf("SELECT * FROM %s WHERE %s ORDER BY %s LIMIT %d, %d", data.PersistenceName(), buffWhere.String(), strings.Join(order, ","), offset, limit)
 
-	fmt.Println("Query string", queryString)
 	q, err := db.Queryx(queryString, values...)
 	if err != nil {
 		return err
